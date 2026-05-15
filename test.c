@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkern <tkern@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/12 12:15:54 by tkern             #+#    #+#             */
-/*   Updated: 2026/05/15 14:51:16 by tkern            ###   ########.fr       */
+/*   Created: 2026/05/15 14:07:20 by tkern             #+#    #+#             */
+/*   Updated: 2026/05/15 14:09:56 by tkern            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-# include <stdio.h>
-# include <stdarg.h>
-# include <stdint.h>
-# include "libft.h"
+#include <stdio.h>
 
-int	ft_printf(const char *format, ...);
-
-#endif
+int	main(void)
+{
+	printf("%s", NULL);
+	return (0);
+}
