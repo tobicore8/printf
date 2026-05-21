@@ -6,7 +6,7 @@
 #    By: tkern <tkern@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/12 12:01:16 by tkern             #+#    #+#              #
-#    Updated: 2026/05/20 15:54:59 by tkern            ###   ########.fr        #
+#    Updated: 2026/05/21 18:33:01 by tkern            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,12 @@ NAME	= libftprintf.a
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -I libft
 
-SRCS	= ft_printf.c
+SRCS	= ft_printf.c print_functions.c print_functions_2.c ft_htoa.c ft_handle_format.c
 OBJS	= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) libft/libft.a
 	$(MAKE) -C libft
 	cp libft/libft.a $(NAME)
 	ar rcs $(NAME) $(OBJS)

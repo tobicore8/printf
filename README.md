@@ -1,4 +1,4 @@
-This project has been created as part of the 42 curriculum by tkern.
+*This project has been created as part of the 42 curriculum by tkern.*
 
 # ft_printf
 
@@ -6,7 +6,7 @@ This project has been created as part of the 42 curriculum by tkern.
 
 `ft_printf` is a partial reimplementation of the C standard library function `printf`. The goal is to understand how variadic functions work in C, how a format string is parsed character by character, and how different data types are converted into their string representations before being written to standard output.
 
-The function handles a format string containing plain text and conversion specifiers (e.g. `%d`, `%s`). For each specifier, the corresponding argument is retrieved from the variable argument list using `va_arg`, converted to a string, and written to stdout using `write()`. The function returns the total number of characters written.
+The function handles a format string containing plain text and conversion specifiers (e.g. `%d`, `%s`). For each specifier, the corresponding argument is retrieved from the variable argument list using `va_arg`, converted to a string, and written to stdout using `write()`. The function returns the total number of characters written, or `-1` on error.
 
 Supported specifiers: `%c`, `%s`, `%p`, `%d`, `%i`, `%u`, `%x`, `%X`, `%%`.
 
@@ -14,9 +14,11 @@ Supported specifiers: `%c`, `%s`, `%p`, `%d`, `%i`, `%u`, `%x`, `%X`, `%%`.
 
 The core of `ft_printf` is a loop that iterates over the format string character by character:
 - If the current character is not `%`, it is written directly to stdout.
-- If the current character is `%`, the next character is passed to `ft_handle_format`, which dispatches to the correct conversion logic.
+- If the current character is `%`, the next character is passed to `ft_handle_format` via the helper `ft_dispatch`, which dispatches to a dedicated print function for that specifier.
 
-For integer-to-string conversion, a general base conversion function `ft_htoa` is used. It takes a number and a base string (e.g. `"0123456789abcdef"` for hexadecimal) and converts the number by repeatedly taking `n % base_length` to extract digits from right to left, then filling a malloc'd string from right to left. This single function handles `%u`, `%x`, `%X`, and `%p`, avoiding code duplication. For signed integers (`%d`, `%i`), the existing `ft_itoa` from libft is reused.
+Error handling follows the behaviour of the original `printf`: if an internal allocation fails, `-1` is returned. The `err` flag in `ft_printf` tracks this state without conflating it with the character count `len`.
+
+For integer-to-string conversion, a general base conversion function `ft_htoa` is used. It takes a number and a base string (e.g. `"0123456789abcdef"` for hexadecimal) and converts the number by repeatedly taking `n % base_length` to extract digits from right to left, then filling a malloc'd string from right to left. The digit-counting step is isolated in a `static` helper `ft_count_digits` to keep `ft_htoa` within the 25-line norm limit. This single function handles `%u`, `%x`, `%X`, and `%p`, avoiding code duplication. For signed integers (`%d`, `%i`), the existing `ft_itoa` from libft is reused.
 
 Pointer addresses (`%p`) are cast to `uintptr_t` before conversion — an unsigned integer type guaranteed to be large enough to hold a memory address on both 32-bit and 64-bit systems.
 
@@ -53,10 +55,27 @@ ft_printf("Dec: %d | Hex: %x | Ptr: %p\n", 255, 255, &some_var);
 ft_printf("Unsigned: %u\n", 4294967295u);
 ```
 
+## Project Structure
+
+```
+ft_printf/
+├── Makefile
+├── ft_printf.h            — header: includes, defines, prototypes
+├── ft_printf.c            — ft_printf, ft_dispatch (static)
+├── ft_handle_format.c     — ft_handle_format
+├── ft_htoa.c              — ft_htoa, ft_count_digits (static)
+├── print_functions.c      — ft_print_char, ft_print_str, ft_print_ptr, ft_print_int
+├── print_functions_2.c    — ft_print_uint, ft_print_hex
+└── libft/
+    ├── Makefile
+    ├── libft.h
+    └── ...
+```
+
 ## Resources
 
 - `man 3 printf` — official documentation for the printf family
-- `man 3 stdarg` — documentation for variadic functions (`va_list`, `va_start`, `va_arg`, `va_end`)
+- `man 3 stdarg` — documentation for variadic functions (`va_list`, `va_start` `va_arg`, `va_end`)
 - `man 2 write` — documentation for the write syscall
 - [cppreference — printf](https://en.cppreference.com/w/c/io/fprintf)
 
