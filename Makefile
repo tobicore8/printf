@@ -6,7 +6,7 @@
 #    By: tkern <tkern@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/12 12:01:16 by tkern             #+#    #+#              #
-#    Updated: 2026/05/21 18:33:01 by tkern            ###   ########.fr        #
+#    Updated: 2026/05/22 11:52:27 by tkern            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,10 @@ OBJS	= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) libft/libft.a
+libft/libft.a:
 	$(MAKE) -C libft
+
+$(NAME): $(OBJS) libft/libft.a
 	cp libft/libft.a $(NAME)
 	ar rcs $(NAME) $(OBJS)
 
